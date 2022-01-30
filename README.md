@@ -13,13 +13,9 @@ No outputs
 ## Example usage
 
 ```yaml
-uses: ApeWorX/ape-action@main
-
 steps:
   - uses: actions/checkout@v2
-
-  - name: Run Tests
-    run: ape test
+  - uses: ApeWorX/ape-action@main  # Runs `ape test`
 ```
 
 **NOTE** This action is still in development
