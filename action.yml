@@ -4,5 +4,5 @@ description: 'Run an ape command'
 
 runs:
   using: 'docker'
-  image: 'apeworx/ape:latest'
+  image: 'docker://apeworx/ape:latest'
   entrypoint: 'ape test'
