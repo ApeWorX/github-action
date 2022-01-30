@@ -5,3 +5,5 @@ description: 'Run an ape command'
 runs:
   using: 'docker'
   image: 'docker://apeworx/ape:latest'
+  args:
+  - 'test'
