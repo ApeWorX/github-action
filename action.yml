@@ -1,0 +1,5 @@
+name: 'ape'
+description: 'Run ape commands'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
