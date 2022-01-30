@@ -1,5 +1,12 @@
 name: 'ape-github-action'
-description: 'Run ape commands'
+author: 'ApeWorX Ltd.'
+description: 'Run an ape command'
+inputs:
+  command:
+    description: 'Command to feed into `ape`'
+    required: false
+    default: 'ape test'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'apeworx/ape:latest'
+  entrypoint: ${{ inputs.command }}
