@@ -4,6 +4,8 @@ description: 'Run an ape command'
 
 runs:
   using: 'docker'
+  # TODO: Eventually use `stable`
   image: 'docker://apeworx/ape:latest'
   args:
+  - 'compile --size'
   - 'test'
