@@ -1,4 +1,4 @@
-name: 'ape'
+name: 'ape-github-action'
 description: 'Run ape commands'
 runs:
   using: 'docker'
