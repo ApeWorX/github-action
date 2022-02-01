@@ -8,4 +8,3 @@ runs:
   image: 'docker://apeworx/ape:latest'
   args:
   - 'test'
-  - '--rootdir=$GITHUB_WORKSPACE'
