@@ -7,4 +7,5 @@ runs:
   # TODO: Eventually use `stable`
   image: 'docker://apeworx/ape:latest'
   args:
-  - 'test --rootdir=$GITHUB_WORKSPACE'
+  - 'test'
+  - '--rootdir=$GITHUB_WORKSPACE'
