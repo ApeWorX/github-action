@@ -8,8 +8,8 @@ runs:
   image: 'docker://apeworx/ape:latest'
   args:
   - 'test'
-
-  - name: Cache compiler installations
+  
+  steps:
     uses: actions/cache@v2
     with:
       path: |
@@ -17,7 +17,6 @@ runs:
         /home/runner/work/_temp/_github_home/.vvm/vyper-*
       key: ${{ runner.os }}-compiler-cache
 
-  - name: Cache build installations
     uses: actions/cache@v2
     with:
       path: |
