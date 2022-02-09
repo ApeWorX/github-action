@@ -19,3 +19,19 @@ runs:
       path: |
         ./.build
       key: ${{ runner.os }}-build-cache
+
+  # todo: select version of python via input
+  - uses: actions/setup-python@v2
+    with: 
+      python-version: 3.8
+  
+  # todo: cache pip
+  # - uses: actions/cache@v2
+
+  # todo: select version of ape via input  
+  - run: pip install eth-ape
+    shell: bash
+
+  # todo: allow selecting plugins
+  - run: ape plugins install solidity vyper
+    shell: bash
