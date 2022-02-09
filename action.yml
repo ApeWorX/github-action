@@ -66,5 +66,5 @@ runs:
 
   - name: Install requirements.txt
     run: pip install -r requirements.txt
+    shell: bash
     if: contains(steps.find-requirements-txt.outputs.file,'No such file or directory')
-    
