@@ -2,9 +2,15 @@ name: 'ape-github-action'
 author: 'ApeWorX Ltd.'
 description: 'Run an ape command'
 
+inputs:
+  python-version: 
+    description: 'optional'
+    required: False
+    default: 3.8
+
 runs:
   using: 'composite'
-  # TODO: Eventually use `stable`
+
   steps:
   
   - uses: actions/cache@v2
@@ -20,10 +26,9 @@ runs:
         ${{ github.workspace }}/.build
       key: ${{ runner.os }}-build-cache
 
-  # todo: select version of python via input
   - uses: actions/setup-python@v2
-    with: 
-      python-version: 3.8
+    with:
+      python-version: ${{ INPUT_PYTHON_VERSION }}
   
   # todo: cache pip
   # - uses: actions/cache@v2
