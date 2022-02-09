@@ -17,7 +17,7 @@ runs:
   - uses: actions/cache@v2
     with:
       path: |
-        ${{ GITHUB_WORKSPACE }}/.build
+        ${{ env.GITHUB_WORKSPACE }}/.build
       key: ${{ runner.os }}-build-cache
 
   # todo: select version of python via input
