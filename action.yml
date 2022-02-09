@@ -3,10 +3,10 @@ author: 'ApeWorX Ltd.'
 description: 'Run an ape command'
 
 runs:
-  using: 'docker'
+  using: 'composite'
   # TODO: Eventually use `stable`
   image: 'docker://apeworx/ape:latest'
-  args:
+  steps:
   - 'test'
   
   - uses: actions/cache@v2
