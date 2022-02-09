@@ -43,17 +43,14 @@ runs:
     run: |
       echo "::set-output name=dir::$(pip cache dir)"
     shell: bash
-    
+
   - name: Restore pip cache
     uses: actions/cache@v2
     id: pip-cache
     with:
       path: |
         ${{ steps.pip-cache-dir-path.outputs.dir }}
-      key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
-      restore-keys: |
-        ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
-        ${{ runner.os }}-pip-
+      key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version-pin }}
 
   - run: pip install eth-ape${{ inputs.ape-version-pin }}
     shell: bash
