@@ -6,7 +6,6 @@ runs:
   using: 'composite'
   # TODO: Eventually use `stable`
   steps:
-  - 'test'
   
   - uses: actions/cache@v2
     with:
