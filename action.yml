@@ -5,7 +5,6 @@ description: 'Run an ape command'
 runs:
   using: 'composite'
   # TODO: Eventually use `stable`
-  image: 'docker://apeworx/ape:latest'
   steps:
   - 'test'
   
