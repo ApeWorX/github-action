@@ -6,7 +6,7 @@ inputs:
   python-version: 
     description: 'Override version of python used to run ape- default 3.8'
     required: False
-    default: 3.8
+    default: '3.8'
 
 runs:
   using: 'composite'
@@ -28,7 +28,7 @@ runs:
 
   - uses: actions/setup-python@v2
     with:
-      python-version: ${{ INPUT_PYTHON_VERSION }}
+      python-version: ${{ inputs.python-version }}
   
   # todo: cache pip
   # - uses: actions/cache@v2
