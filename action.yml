@@ -7,6 +7,9 @@ inputs:
     description: 'Override version of python used to run ape- default 3.8'
     required: False
     default: '3.8'
+  ape-version-pin:
+    description: 'Override version of eth-ape'
+    required: False
 
 runs:
   using: 'composite'
@@ -33,8 +36,7 @@ runs:
   # todo: cache pip
   # - uses: actions/cache@v2
 
-  # todo: select version of ape via input  
-  - run: pip install eth-ape
+  - run: pip install eth-ape${{ inputs.ape-version-pin }}
     shell: bash
 
   # todo: allow selecting plugins
