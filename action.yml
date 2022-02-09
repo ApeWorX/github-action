@@ -61,10 +61,10 @@ runs:
   - name: Find if requirements.txt if exists
     id: find-requirements-txt
     run: |
-      echo "::set-output name=file::$(cat requirements.txt)"
+      echo "::set-output name=file::$(ls requirements.txt)"
     shell: bash
 
   - name: Install requirements.txt
     run: pip install -r requirements.txt
     shell: bash
-    if: contains(steps.find-requirements-txt.outputs.file,'No such file or directory')
+    if: steps.find-requirements-txt.outputs.file == requirements.txt
