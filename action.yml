@@ -4,7 +4,7 @@ description: 'Run an ape command'
 
 inputs:
   python-version: 
-    description: 'optional'
+    description: 'Override version of python used to run ape- default 3.8'
     required: False
     default: 3.8
 
