@@ -13,6 +13,7 @@ inputs:
   ape-plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
     required: False
+    default: '.'
 
 
 runs:
