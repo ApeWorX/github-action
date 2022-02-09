@@ -10,8 +10,8 @@ runs:
   - uses: actions/cache@v2
     with:
       path: |
-        ~/.solcx
-        ~/.vvm/vyper-*
+        /home/runner/.solcx
+        /home/runner/.vvm/vyper-*
       key: ${{ runner.os }}-compiler-cache
 
   - uses: actions/cache@v2
