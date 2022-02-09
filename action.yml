@@ -10,6 +10,10 @@ inputs:
   ape-version-pin:
     description: 'Override version of eth-ape'
     required: False
+  ape-plugins-list:
+    description: 'Space seperated list of plugins to install with relevant pinning applied'
+    required: False
+
 
 runs:
   using: 'composite'
@@ -39,6 +43,5 @@ runs:
   - run: pip install eth-ape${{ inputs.ape-version-pin }}
     shell: bash
 
-  # todo: allow selecting plugins
-  - run: ape plugins install solidity vyper
+  - run: ape plugins install ${{ inputs.ape-plugins-list }}
     shell: bash
