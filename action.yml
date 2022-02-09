@@ -67,4 +67,4 @@ runs:
   - name: Install requirements.txt
     run: pip install -r requirements.txt
     shell: bash
-    if: steps.find-requirements-txt.outputs.file == requirements.txt
+    if: steps.find-requirements-txt.outputs.file == 'requirements.txt'
