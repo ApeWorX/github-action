@@ -1,6 +1,9 @@
 name: 'ape-github-action'
 author: 'ApeWorX Ltd.'
 description: 'Run an ape command'
+branding:
+  icon: 'check-circle'
+  color: 'green'
 
 inputs:
   python-version: 
