@@ -30,7 +30,7 @@ No outputs
 ```yaml
 steps:
   - uses: actions/checkout@v2
-  - uses: ApeWorX/ape-action@main
+  - uses: ApeWorX/github-action@v1
   - run: ape test -s
 ```
 
