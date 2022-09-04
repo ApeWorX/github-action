@@ -58,7 +58,7 @@ runs:
   - run: pip install eth-ape${{ inputs.ape-version-pin }}
     shell: bash
 
-  - run: ape plugins install ${{ inputs.ape-plugins-list }}
+  - run: ape plugins install -U ${{ inputs.ape-plugins-list }}
     shell: bash
 
   - name: Find if requirements.txt if exists
