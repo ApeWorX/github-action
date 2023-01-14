@@ -44,7 +44,7 @@ runs:
   - name: Set pip cache directory path
     id: pip-cache-dir-path
     run: |
-      echo "::set-output name=dir::$(pip cache dir)"
+      echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
     shell: bash
 
   - name: Restore pip cache
@@ -64,7 +64,7 @@ runs:
   - name: Find if requirements.txt if exists
     id: find-requirements-txt
     run: |
-      echo "::set-output name=file::$(ls requirements.txt)"
+      echo "file=$(ls requirements.txt)" >> $GITHUB_OUTPUT
     shell: bash
 
   - name: Install requirements.txt
