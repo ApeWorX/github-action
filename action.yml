@@ -61,7 +61,6 @@ runs:
   - run: |
       if [ -n "${{ inputs.ape-remote-git-version }}" ]; 
         pip install git+${{ inputs.ape-remote-git-version }}
-
       else:
         pip install eth-ape${{ inputs.ape-version }}
     shell: bash
