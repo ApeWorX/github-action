@@ -16,7 +16,7 @@ inputs:
   ape-remote-git-version:
     description: 'Install Ape from a remote branch or commit URL'
     required: False
-  ape-plugins-list:
+  plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
     required: False
     default: '-U .'
@@ -66,7 +66,7 @@ runs:
         pip install eth-ape${{ inputs.ape-version }}
     shell: bash
 
-  - run: ape plugins install ${{ inputs.ape-plugins-list }}
+  - run: ape plugins install ${{ inputs.plugins-list }}
     shell: bash
 
   - name: Find if requirements.txt if exists

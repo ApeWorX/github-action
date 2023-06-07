@@ -15,7 +15,7 @@ Default is using Python `'3.10'`.
 Default is to use the latest version of `eth-ape` (no pin).
 Does not work with `ape-remote-git-version`.
 
-### `ape-plugins-list`
+### `plugins-list`
 
 **Optional** Space-separated list of plugins to install.
 Default is to install from local `ape-config.yaml`.
@@ -41,7 +41,7 @@ steps:
     with:
       python-version: "3.10"  # (optional)
       ape-version: "0.6.0"  # (optional)
-      ape-plugins-list: "solidity vyper==0.6.2"
+      plugins-list: "solidity vyper==0.6.2"
   - run: ape test -s
 ```
 
