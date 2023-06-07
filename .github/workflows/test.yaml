@@ -1,24 +1,31 @@
-on: ["push", "pull_request"]
+name: tests
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-name: Test
+on:
+  push:
+    branches: [main]
+    tags-ignore: ['**']
+    paths-ignore: ['**.md']
+  pull_request:
+    paths-ignore: ['**.md']
 
 concurrency:
-  # Cancel older, in-progress jobs from the same PR, same workflow.
-  # use run_id if the job is triggered by a push to ensure
-  # push-triggered jobs to not get canceled.
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
-    uns-on: ubuntu-latest
+  run-this-action:
+    name: Run action (${{ matrix.runs-on }}, version ${{ matrix.version }})
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-    - uses: ./
-      # Add inputs to test things out, but don't merge changes here.,
-      # with:
-      #  ape-version:
-      #   ape-remote-git-version:
-      #   plugins-list:
+      - uses: actions/checkout@v3
+
+      - name: Run this action
+        uses: ./
+        with:
+          version: ${{ matrix.version }}
+
+      - run: ape --help
