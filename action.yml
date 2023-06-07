@@ -59,7 +59,7 @@ runs:
       key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version }}
 
   - run: |
-      if [ -n "${{ inputs.ape-commit }}" ]; 
+      if [ -n "${{ inputs.ape-remote-git-version }}" ]; 
         pip install git+${{ inputs.ape-remote-git-version }}
 
       else:
