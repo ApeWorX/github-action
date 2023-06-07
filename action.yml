@@ -7,11 +7,14 @@ branding:
 
 inputs:
   python-version: 
-    description: 'Override version of python used to run ape- default 3.8'
+    description: 'Override version of python used to run ape- default 3.10'
     required: False
-    default: '3.8'
-  ape-version-pin:
+    default: '3.10'
+  ape-version:
     description: 'Override version of eth-ape'
+    required: False
+  ape-remote-git-version:
+    description: 'Install Ape from a remote branch or commit URL'
     required: False
   ape-plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
@@ -53,9 +56,14 @@ runs:
     with:
       path: |
         ${{ steps.pip-cache-dir-path.outputs.dir }}
-      key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version-pin }}
+      key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version }}
 
-  - run: pip install eth-ape${{ inputs.ape-version-pin }}
+  - run: |
+      if [ -n "${{ inputs.ape-commit }}" ]; 
+        pip install git+${{ inputs.ape-remote-git-version }}
+
+      else:
+        pip install eth-ape${{ inputs.ape-version }}
     shell: bash
 
   - run: ape plugins install ${{ inputs.ape-plugins-list }}

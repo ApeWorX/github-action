@@ -7,12 +7,13 @@ This action allows you to use your favorte [`ape`](https://github.com/ApeWorX/ap
 ### `python-version`
 
 **Optional** Overrides the version of python used to run ape.
-Default is using Python `'3.8'`.
+Default is using Python `'3.10'`.
 
-### `ape-version-pin`
+### `ape-version`
 
 **Optional** Overrides the pin used to install `eth-ape`.
 Default is to use the latest version of `eth-ape` (no pin).
+Cannot be used with `ape-commit`.
 
 ### `ape-plugins-list`
 
@@ -21,16 +22,25 @@ Default is to install from local `ape-config.yaml`.
 
 Note: When requesting a pin, put it all together like `'plugin-a plugin-b==1.2.3 plugin-c>1.2'`
 
+### `ape-remote-git-version`
+
+**Optional** Install Ape from remote GitHub URL instead of version.
+This is useful when installing from a branch or a commit hash to test something out.
+If supplied, will use this instead of version. Otherwise, will use
+version. If neither supplied, defaults to latest release.
+
 ## Outputs
 
-No outputs
+No outputs.
 
 ## Example usage
 
 ```yaml
 steps:
-  - uses: actions/checkout@v2
-  - uses: ApeWorX/github-action@v1
+  - uses: actions/checkout@v3
+  - uses: ApeWorX/github-action@v2
+    with:
+      python-version: "3.10"  # (optional)
   - run: ape test -s
 ```
 
