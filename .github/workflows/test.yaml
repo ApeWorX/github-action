@@ -18,5 +18,5 @@ jobs:
     steps:
     - uses: ./
       # Add inputs to test things out, but don't merge changes here.
-      # with:
-      #  ape-remote-git-version: 
+      with:
+       ape-remote-git-version: "git+https://github.com/antazoey/ape.git@feat/cv"
