@@ -10,13 +10,13 @@ inputs:
     description: 'Override version of python used to run ape- default 3.10'
     required: False
     default: '3.10'
-  ape-version:
+  ape-version-pin:
     description: 'Override version of eth-ape'
     required: False
   ape-remote-git-version:
     description: 'Install Ape from a remote branch or commit URL'
     required: False
-  plugins-list:
+  ape-plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
     required: False
     default: '-U .'
@@ -56,16 +56,16 @@ runs:
     with:
       path: |
         ${{ steps.pip-cache-dir-path.outputs.dir }}
-      key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version }}
+      key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version-pin }}
 
   - run: |
       if [ -n "${{ inputs.ape-remote-git-version }}" ]; 
         pip install git+${{ inputs.ape-remote-git-version }}
       else:
-        pip install eth-ape${{ inputs.ape-version }}
+        pip install eth-ape${{ inputs.ape-version-pin }}
     shell: bash
 
-  - run: ape plugins install ${{ inputs.plugins-list }}
+  - run: ape plugins install ${{ inputs.ape-plugins-list }}
     shell: bash
 
   - name: Find if requirements.txt if exists

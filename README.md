@@ -9,13 +9,13 @@ This action allows you to use your favorte [`ape`](https://github.com/ApeWorX/ap
 **Optional** Overrides the version of python used to run ape.
 Default is using Python `'3.10'`.
 
-### `ape-version`
+### `ape-version-pin`
 
 **Optional** Overrides the pin used to install `eth-ape`.
 Default is to use the latest version of `eth-ape` (no pin).
 Does not work with `ape-remote-git-version`.
 
-### `plugins-list`
+### `ape-plugins-list`
 
 **Optional** Space-separated list of plugins to install.
 Default is to install from local `ape-config.yaml`.
@@ -41,7 +41,7 @@ steps:
     with:
       python-version: "3.10"  # (optional)
       ape-version: "0.6.0"  # (optional)
-      plugins-list: "solidity vyper==0.6.2"
+      ape-plugins-list: "solidity vyper==0.6.2"
   - run: ape test -s
 ```
 
