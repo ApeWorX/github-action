@@ -7,14 +7,11 @@ branding:
 
 inputs:
   python-version: 
-    description: 'Override version of python used to run ape- default 3.10'
+    description: 'Override version of python used to run ape- default 3.8'
     required: False
-    default: '3.10'
+    default: '3.8'
   ape-version-pin:
-    description: 'Override version of eth-ape'
-    required: False
-  ape-remote-git-version:
-    description: 'Install Ape from a remote branch or commit URL'
+    description: 'Override version of eth-ape; can also use a git+ prefixed value'
     required: False
   ape-plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
@@ -59,9 +56,10 @@ runs:
       key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version-pin }}
 
   - run: |
-      if [ -n "${{ inputs.ape-remote-git-version }}" ]
+      if [[ "${{ inputs.ape-version-pin }}" == git+* ]]
       then
-        pip install git+${{ inputs.ape-remote-git-version }}
+        echo "INFO: Install remote git version."
+        pip install ${{ inputs.ape-version-pin }}
       else
         pip install eth-ape${{ inputs.ape-version-pin }}
       fi
