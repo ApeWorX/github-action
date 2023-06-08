@@ -56,7 +56,7 @@ runs:
       key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version-pin }}
 
   - run: |
-      pip uninstall eth-ape --yes --quiet
+      pip install --upgrade pip
       if [[ "${{ inputs.ape-version-pin }}" == git+* ]]
       then
         echo "INFO: Installing from a remote git version."
