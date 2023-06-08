@@ -35,7 +35,7 @@ steps:
     with:
       python-version: "3.10"  # (optional)
       ape-version-pin: "0.6.0"  # (optional)
-      ape-plugins-list: "solidity vyper==0.6.2"
+      ape-plugins-list: "solidity vyper==0.6.2"  # (optional)
   - run: ape test -s
 ```
 
