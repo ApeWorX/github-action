@@ -11,7 +11,7 @@ inputs:
     required: False
     default: '3.8'
   ape-version-pin:
-    description: 'Override version of eth-ape; can also use a git+ prefixed value'
+    description: 'Override version of eth-ape, can also use a `git+` prefixed value'
     required: False
   ape-plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
