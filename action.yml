@@ -11,7 +11,7 @@ inputs:
     required: False
     default: '3.8'
   ape-version-pin:
-    description: 'Override version of eth-ape'
+    description: 'Override version of eth-ape, can also use a `git+` prefixed value'
     required: False
   ape-plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
@@ -55,7 +55,15 @@ runs:
         ${{ steps.pip-cache-dir-path.outputs.dir }}
       key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version-pin }}
 
-  - run: pip install eth-ape${{ inputs.ape-version-pin }}
+  - run: |
+      pip install --upgrade pip
+      if [[ "${{ inputs.ape-version-pin }}" == git+* ]]
+      then
+        echo "INFO: Installing from a remote git version."
+        pip install ${{ inputs.ape-version-pin }}
+      else
+        pip install eth-ape${{ inputs.ape-version-pin }}
+      fi
     shell: bash
 
   - run: ape plugins install ${{ inputs.ape-plugins-list }}

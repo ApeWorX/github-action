@@ -1,0 +1,31 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+    tags-ignore: ['**']
+    paths-ignore: ['**.md']
+  pull_request:
+    paths-ignore: ['**.md']
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-this-action:
+    name: Run action (${{ matrix.runs-on }}, version ${{ matrix.version }})
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run this action
+        uses: ./
+        with:
+          version: ${{ matrix.version }}
+
+      - run: ape --help

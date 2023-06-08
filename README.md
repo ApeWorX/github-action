@@ -13,6 +13,7 @@ Default is using Python `'3.8'`.
 
 **Optional** Overrides the pin used to install `eth-ape`.
 Default is to use the latest version of `eth-ape` (no pin).
+Can also use a `git+` value to install a branch, commit, or tag.
 
 ### `ape-plugins-list`
 
@@ -23,14 +24,18 @@ Note: When requesting a pin, put it all together like `'plugin-a plugin-b==1.2.3
 
 ## Outputs
 
-No outputs
+No outputs.
 
 ## Example usage
 
 ```yaml
 steps:
-  - uses: actions/checkout@v2
-  - uses: ApeWorX/github-action@v1
+  - uses: actions/checkout@v3
+  - uses: ApeWorX/github-action@v2
+    with:
+      python-version: "3.10"  # (optional)
+      ape-version-pin: "0.6.0"  # (optional)
+      ape-plugins-list: "solidity vyper==0.6.2"  # (optional)
   - run: ape test -s
 ```
 
