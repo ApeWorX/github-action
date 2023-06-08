@@ -60,7 +60,7 @@ runs:
       if [[ "${{ inputs.ape-version-pin }}" == git+* ]]
       then
         echo "INFO: Installing from a remote git version."
-        pip install -e ${{ inputs.ape-version-pin }}
+        pip install ${{ inputs.ape-version-pin }}
       else
         pip install eth-ape${{ inputs.ape-version-pin }}
       fi
