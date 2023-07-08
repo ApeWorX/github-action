@@ -14,18 +14,31 @@ concurrency:
 
 jobs:
   run-this-action:
-    name: Run action (${{ matrix.runs-on }}, version ${{ matrix.version }})
-    runs-on: ${{ matrix.runs-on }}
+    name: Run action (${{ matrix.version }})
+    runs-on: [ubuntu-latest]
     strategy:
       fail-fast: false
       matrix:
-        runs-on: [ubuntu-latest, macos-latest]
+        version: ["default", "0.6.11", "==0.6.11", "git+https://github.com/ApeWorX/ape.git@main"]
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run this action
+      - name: Check version pin
+        id: check-version
+        run: |
+          if [[ ${{ matrix.version }} == "default" ]]; then
+            echo "ape-version=''" >> $GITHUB_OUTPUT
+          else
+            echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
+          fi
+      - name: Run ape action
+        id: ape-action
         uses: ./
         with:
-          version: ${{ matrix.version }}
+          ape-version-pin: ${{ steps.check-version.outputs.ape-version }}
 
       - run: ape --help
+
+      - name: Print outputs
+        run: |
+          echo "Output: ${{ steps.ape-action.outputs.ape-version }}"

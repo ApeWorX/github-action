@@ -6,7 +6,7 @@ branding:
   color: 'green'
 
 inputs:
-  python-version: 
+  python-version:
     description: 'Override version of python used to run ape- default 3.8'
     required: False
     default: '3.8'
@@ -18,64 +18,86 @@ inputs:
     required: False
     default: '-U .'
 
+outputs:
+  ape-version:
+    description: 'The version of Ape installed'
 
 runs:
   using: 'composite'
 
   steps:
-  
-  - uses: actions/cache@v3
-    with:
-      path: |
-        /home/runner/.solcx
-        /home/runner/.vvm/vyper-*
-      key: ${{ runner.os }}-compiler-cache
+    - uses: actions/cache@v3
+      with:
+        path: |
+          /home/runner/.solcx
+          /home/runner/.vvm/vyper-*
+        key: ${{ runner.os }}-compiler-cache
 
-  - uses: actions/cache@v3
-    with:
-      path: |
-        ${{ github.workspace }}/.build
-      key: ${{ runner.os }}-build-cache
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ${{ github.workspace }}/.build
+        key: ${{ runner.os }}-build-cache
 
-  - uses: actions/setup-python@v4
-    with:
-      python-version: ${{ inputs.python-version }}
-  
-  - name: Set pip cache directory path
-    id: pip-cache-dir-path
-    run: |
-      echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-    shell: bash
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
 
-  - name: Restore pip cache
-    uses: actions/cache@v3
-    id: pip-cache
-    with:
-      path: |
-        ${{ steps.pip-cache-dir-path.outputs.dir }}
-      key: ${{ inputs.python-version }}-pip-${{ inputs.ape-version-pin }}
+    - name: Set pip cache directory path
+      id: pip-cache-dir-path
+      run: |
+        echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+      shell: bash
 
-  - run: |
-      pip install --upgrade pip
-      if [[ "${{ inputs.ape-version-pin }}" == git+* ]]
-      then
-        echo "INFO: Installing from a remote git version."
-        pip install ${{ inputs.ape-version-pin }}
-      else
-        pip install eth-ape${{ inputs.ape-version-pin }}
-      fi
-    shell: bash
+    - name: Determine ape version to use
+      id: determine-version
+      run: |
+        if [[ "${{ inputs.ape-version-pin }}" != "" && "${{ inputs.ape-version-pin }}" != "''" ]]; then
+          echo "ape-version=${{ inputs.ape-version-pin }}" >> $GITHUB_OUTPUT
+        else
+          latest_version=$(curl -s https://pypi.org/pypi/eth-ape/json | jq -r '.info.version')
+          echo "ape-version=${latest_version}" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
 
-  - run: ape plugins install ${{ inputs.ape-plugins-list }}
-    shell: bash
+    - name: Restore pip cache
+      uses: actions/cache@v3
+      id: pip-cache
+      with:
+        path: |
+          ${{ steps.pip-cache-dir-path.outputs.dir }}
+        key: ${{ inputs.python-version }}-pip-${{ steps.determine-version.outputs.ape-version }}
 
-  - name: Find if requirements.txt if exists
-    id: find-requirements-txt
-    run: |
-      echo "file=$(ls requirements.txt)" >> $GITHUB_OUTPUT
-    shell: bash
+    - name: Install Ape
+      run: |
+        pip install --upgrade pip
+        if [[ "${{ steps.determine-version.outputs.ape-version }}" == git+* ]]
+        then
+          echo "INFO: Installing from a remote git version."
+          pip install ${{ steps.determine-version.outputs.ape-version }}
+        else
+          version_regex='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
+          if [[ ${{ steps.determine-version.outputs.ape-version }} =~ $version_regex ]]; then
+            # Allows for excluding `==` to `ape-version-pin`
+            echo "Installing with == prefix"
+            pip install eth-ape==${{ steps.determine-version.outputs.ape-version }}
+          else
+            echo "Installing using given constraints"
+            pip install eth-ape${{ steps.determine-version.outputs.ape-version }}
+          fi
+        fi
+      shell: bash
 
-  - name: Install requirements.txt
-    run: pip install -r requirements.txt
-    shell: bash
-    if: steps.find-requirements-txt.outputs.file == 'requirements.txt'
+    - run: ape plugins install ${{ inputs.ape-plugins-list }}
+      shell: bash
+
+    - name: Find if requirements.txt if exists
+      id: find-requirements-txt
+      run: |
+        echo "file=$(ls requirements.txt)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Install requirements.txt
+      run: pip install -r requirements.txt
+      shell: bash
+      if: steps.find-requirements-txt.outputs.file == 'requirements.txt'
