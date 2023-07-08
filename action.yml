@@ -132,3 +132,16 @@ runs:
       run: pip install -r requirements.txt
       shell: bash
       if: steps.check-requirements-txt.outputs.files_exists == 'true'
+
+    - name: Ensure compiler directories exist
+      run: |
+        # This helps caching work even when these compilers
+        # are not used.
+        if [ ! -d "/home/runner/.solcx" ]; then
+          mkdir "/home/runner/.solcx"
+          echo "Solcx directory created."
+        fi
+        if [ ! -d "/home/runner/.vvm" ]; then
+          mkdir "/home/runner/.vvm"
+          echo "VVM directory created."
+        fi
