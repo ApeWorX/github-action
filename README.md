@@ -25,9 +25,11 @@ Example values:
 ### `ape-plugins-list`
 
 **Optional** Space-separated list of plugins to install.
-Default is to install from local `ape-config.yaml`.
+The default is to install from your project's local `ape-config.yaml` **with the --upgrade** flag included.
 
-Note: When requesting a pin, put it all together like `'plugin-a plugin-b==1.2.3 plugin-c>1.2'`
+**WARNING** If you are specifying plugin version constraints in your `ape-config.yaml`, you likely want to override this input to exclude the `-U` flag or else you may have issues installing.
+
+To request specific versions of plugins, use a space-separated value like this `'plugin-a plugin-b==1.2.3 plugin-c>1.2'`.
 
 ## Outputs
 
