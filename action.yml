@@ -90,7 +90,7 @@ runs:
 
     - name: Check ape-config.yaml exists
       id: check-ape-config-yaml
-      uses: andstor/file-existence-action@v1
+      uses: andstor/file-existence-action@v2
       with:
         files: 'ape-config.yaml'
 
