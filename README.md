@@ -17,10 +17,10 @@ Can also use a `git+` value to install a branch, commit, or tag.
 
 Example values:
 
-* `1.0.0`
-* `==1.0.0`
-* `>=1.0.0,<2.0`
-* `git+https://github.com/your-github/ape.git@your-branch`
+- `1.0.0`
+- `==1.0.0`
+- `>=1.0.0,<2.0`
+- `git+https://github.com/your-github/ape.git@your-branch`
 
 ### `ape-plugins-list`
 
