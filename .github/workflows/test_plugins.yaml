@@ -1,0 +1,39 @@
+name: Ape Plugins Test
+
+on:
+  push:
+    branches: [main]
+    tags-ignore: ['**']
+    paths-ignore: ['**.md']
+  pull_request:
+    paths-ignore: ['**.md']
+
+concurrency:
+  group: ${{ github.ref }}-plugins
+  cancel-in-progress: true
+
+jobs:
+  run-this-action:
+    name: Run action (${{ matrix.plugins }})
+    runs-on: [ubuntu-latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        plugins: ['default', 'tokens', 'tokens==0.6.1 polygon']
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check plugins
+        id: check-plugins
+        run: |
+          if [[ "${{ matrix.plugins }}" != "default" ]]; then
+            echo "ape-plugins=${{ matrix.plugins }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run ape action
+        id: ape-action
+        uses: ./
+        with:
+          ape-plugins-list: ${{ steps.check-plugins.outputs.ape-plugins }}
+
+      - run: ape plugins list
