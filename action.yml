@@ -16,7 +16,7 @@ inputs:
   ape-plugins-list:
     description: 'Space seperated list of plugins to install with relevant pinning applied'
     required: False
-    default: '-U .'
+    default: ''
 
 outputs:
   ape-version:
@@ -88,7 +88,29 @@ runs:
         fi
       shell: bash
 
-    - run: ape plugins install ${{ inputs.ape-plugins-list }}
+    - name: Check ape-config.yaml exists
+      id: check-ape-config-yaml
+      uses: andstor/file-existence-action@v2
+      with:
+        files: 'ape-config.yaml'
+
+    - run: |
+        if [[ "${{ steps.check-ape-config-yaml.outputs.files_exists }}"  == "true" ]]; then
+          version_present=$(sed -n '/^plugins:/,/^[^ ]/{/version:/p;}' "ape-config.yaml" | grep -c version)
+        else
+          version_present=0
+        fi
+
+        if [[ "${version_present}" == "1" ]] && [[ -z "${{ inputs.ape-plugins-list }}" ]]; then
+          plugins_value="."
+        elif [[ -z "${{ inputs.ape-plugins-list }}" ]]; then
+          plugins_value="--upgrade ."
+        else
+          plugins_value="${{ inputs.ape-plugins-list }}"
+        fi
+
+        ape plugins install "$plugins_value"
+
       shell: bash
 
     - name: Find if requirements.txt if exists

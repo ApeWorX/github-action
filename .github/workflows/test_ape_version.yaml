@@ -1,4 +1,4 @@
-name: tests
+name: Ape Version Test
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     paths-ignore: ['**.md']
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.ref }}-version
   cancel-in-progress: true
 
 jobs:
@@ -19,7 +19,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["default", "0.6.11", "==0.6.11", "git+https://github.com/ApeWorX/ape.git@main"]
+        version:
+          [
+            'default',
+            '0.6.11',
+            '==0.6.11',
+            'git+https://github.com/ApeWorX/ape.git@main',
+          ]
     steps:
       - uses: actions/checkout@v3
 

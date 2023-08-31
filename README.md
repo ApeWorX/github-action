@@ -17,17 +17,19 @@ Can also use a `git+` value to install a branch, commit, or tag.
 
 Example values:
 
-* `1.0.0`
-* `==1.0.0`
-* `>=1.0.0,<2.0`
-* `git+https://github.com/your-github/ape.git@your-branch`
+- `1.0.0`
+- `==1.0.0`
+- `>=1.0.0,<2.0`
+- `git+https://github.com/your-github/ape.git@your-branch`
 
 ### `ape-plugins-list`
 
 **Optional** Space-separated list of plugins to install.
-Default is to install from local `ape-config.yaml`.
+The default is to install from your project's local `ape-config.yaml`.
+If you do not have any plugin version constraints specified in your `ape-config.yaml` file, the default includes the `-U` (`--upgrade`) flag to ensure you get the latest plugin versons.
+Otherwise, it relies on the constraints you have configured.
 
-Note: When requesting a pin, put it all together like `'plugin-a plugin-b==1.2.3 plugin-c>1.2'`
+To request specific versions of plugins, use a space-separated value like this `'plugin-a plugin-b==1.2.3 plugin-c>1.2'`.
 
 ## Outputs
 
