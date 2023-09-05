@@ -1,4 +1,4 @@
-name: Ape Plugins Test
+name: Plugins Test
 
 on:
   push:
@@ -19,15 +19,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plugins: ['default', 'tokens', 'tokens==0.6.1']
+        plugins: [
+          'default_with_version_config',
+          'default_without_version_in_config',
+          'tokens',
+          'tokens==0.6.1'
+        ]
     steps:
       - uses: actions/checkout@v3
 
       - name: Check plugins
         id: check-plugins
         run: |
-          if [[ "${{ matrix.plugins }}" != "default" ]]; then
+          if [[ "${{ matrix.plugins }}" != default_* ]]; then
             echo "ape-plugins=${{ matrix.plugins }}" >> $GITHUB_OUTPUT
+          fi
+
+          if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" ]]; then
+            # Remove the version so it defaults to `. -U`.
+            sed -i 's/version: 0.6.1//g' "ape-config.yaml"
           fi
 
       - name: Run ape action

@@ -93,15 +93,25 @@ runs:
       uses: andstor/file-existence-action@v2
       with:
         files: 'ape-config.yaml'
-
-    - run: |
-        if [[ "${{ steps.check-ape-config-yaml.outputs.files_exists }}"  == "true" ]]; then
-          version_present=$(sed -n '/^plugins:/,/^[^ ]/{/version:/p;}' "ape-config.yaml" | grep -c version)
+      
+    - name: Check version specs in config
+      id: check-plugin-version-specs
+      run: |
+        if [[ "${{ steps.check-ape-config-yaml.outputs.files_exists }}" == "true" ]]; then
+          version_present=$(sed -n '/^plugins:/,/^[^ ]/{/version:/p;}' "ape-config.yaml" | grep -c version || true)
+          if [[ -z "${version_present}" ]]; then
+            echo "version_present=0" >> $GITHUB_OUTPUT
+          else
+            echo "version_present=1" >> $GITHUB_OUTPUT
+          fi
         else
-          version_present=0
+          echo "version_present=0" >> $GITHUB_OUTPUT
         fi
+      shell: bash
 
-        if [[ "${version_present}" == "1" ]] && [[ -z "${{ inputs.ape-plugins-list }}" ]]; then
+    - name: Install Plugins
+      run: |
+        if [[ "${{ steps.check-plugin-version-specs.outputs.version_present }}" == "1" ]] && [[ -z "${{ inputs.ape-plugins-list }}" ]]; then
           plugins_value="."
         elif [[ -z "${{ inputs.ape-plugins-list }}" ]]; then
           plugins_value="--upgrade ."
@@ -109,17 +119,17 @@ runs:
           plugins_value="${{ inputs.ape-plugins-list }}"
         fi
 
-        ape plugins install "$plugins_value"
+        ape plugins install $plugins_value
 
       shell: bash
 
-    - name: Find if requirements.txt if exists
-      id: find-requirements-txt
-      run: |
-        echo "file=$(ls requirements.txt)" >> $GITHUB_OUTPUT
-      shell: bash
-
+    - name: Check requirments.txt exists
+      id: check-requirements-txt
+      uses: andstor/file-existence-action@v2
+      with:
+        files: 'requirements.txt'
+  
     - name: Install requirements.txt
       run: pip install -r requirements.txt
       shell: bash
-      if: steps.find-requirements-txt.outputs.file == 'requirements.txt'
+      if: steps.check-ape-config-yaml.outputs.files_exists == true

@@ -1,4 +1,4 @@
-name: Ape Version Test
+name: Version Test
 
 on:
   push:
