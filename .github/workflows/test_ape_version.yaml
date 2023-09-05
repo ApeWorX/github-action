@@ -1,4 +1,4 @@
-name: Ape Version Test
+name: Version Test
 
 on:
   push:
@@ -26,8 +26,6 @@ jobs:
             '==0.6.11',
             'git+https://github.com/ApeWorX/ape.git@main',
           ]
-        plugins: ['config_with_version']
-
     steps:
       - uses: actions/checkout@v3
 
@@ -39,7 +37,6 @@ jobs:
           else
             echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
           fi
-
       - name: Run ape action
         id: ape-action
         uses: ./
