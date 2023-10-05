@@ -48,3 +48,7 @@ jobs:
       - name: Print outputs
         run: |
           echo "Output: ${{ steps.ape-action.outputs.ape-version }}"
+        
+      - name: Requirements.txt Test
+        run: |
+          pip show hypothesis

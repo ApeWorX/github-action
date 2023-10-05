@@ -1,0 +1,3 @@
+# NOTE: This only exists to for testing that the action
+#   installs requirements files.
+hypothesis>=2.31.0
