@@ -132,4 +132,4 @@ runs:
     - name: Install requirements.txt
       run: pip install -r requirements.txt
       shell: bash
-      if: steps.check-ape-config-yaml.outputs.files_exists == true
+      if: steps.check-requirements-txt.outputs.files_exists == 'true'
