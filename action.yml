@@ -90,7 +90,7 @@ runs:
 
     - name: Check ape-config.yaml exists
       id: check-ape-config-yaml
-      uses: andstor/file-existence-action@v2
+      uses: andstor/file-existence-action@v3
       with:
         files: 'ape-config.yaml'
       
@@ -125,7 +125,7 @@ runs:
 
     - name: Check requirments.txt exists
       id: check-requirements-txt
-      uses: andstor/file-existence-action@v2
+      uses: andstor/file-existence-action@v3
       with:
         files: 'requirements.txt'
   
