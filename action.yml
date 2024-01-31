@@ -26,20 +26,20 @@ runs:
   using: 'composite'
 
   steps:
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: |
           /home/runner/.solcx
           /home/runner/.vvm/vyper-*
         key: ${{ runner.os }}-compiler-cache
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: |
           ${{ github.workspace }}/.build
         key: ${{ runner.os }}-build-cache
 
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}
 
@@ -61,7 +61,7 @@ runs:
       shell: bash
 
     - name: Restore pip cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: pip-cache
       with:
         path: |
@@ -122,7 +122,6 @@ runs:
         ape plugins install $plugins_value
 
       shell: bash
-
     - name: Check requirments.txt exists
       id: check-requirements-txt
       uses: andstor/file-existence-action@v3
