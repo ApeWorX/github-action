@@ -27,6 +27,7 @@ runs:
 
   steps:
     - uses: actions/cache@v4
+      name: Compilers cache
       with:
         path: |
           /home/runner/.solcx
@@ -34,6 +35,7 @@ runs:
         key: ${{ runner.os }}-compiler-cache
 
     - uses: actions/cache@v4
+      name: Build cache
       with:
         path: |
           ${{ github.workspace }}/.build
@@ -132,3 +134,23 @@ runs:
       run: pip install -r requirements.txt
       shell: bash
       if: steps.check-requirements-txt.outputs.files_exists == 'true'
+
+    - name: Ensure cache directories exist
+      shell: bash
+      run: |
+        # NOTE: Workaround for an unrepressible warning
+        # in the cache action:
+        # https://github.com/actions/cache/issues/1241
+
+        if [ ! -d "/home/runner/.solcx" ]; then
+          mkdir "/home/runner/.solcx"
+          echo "Solcx directory created."
+        fi
+        if [ ! -d "/home/runner/.vvm" ]; then
+          mkdir "/home/runner/.vvm"
+          echo "VVM directory created."
+        fi
+        if [ ! -d "${{ github.workspace }}/.build" ]; then
+          mkdir "${{ github.workspace }}/.build"
+          echo ".build directory created."
+        fi
