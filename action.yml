@@ -137,8 +137,7 @@ runs:
     - name: Ensure cache directories exist
       shell: bash
       run: |
-        # This helps avoid caching warnings even when these compilers
-        # are not used.
+        # This helps avoid caching warnings even when these are not used.
         if [ ! -d "/home/runner/.solcx" ]; then
           mkdir "/home/runner/.solcx"
           echo "Solcx directory created."
