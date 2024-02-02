@@ -134,6 +134,7 @@ runs:
       if: steps.check-requirements-txt.outputs.files_exists == 'true'
 
     - name: Ensure compiler directories exist
+      shell: bash
       run: |
         # This helps caching work even when these compilers
         # are not used.
