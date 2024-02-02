@@ -26,13 +26,13 @@ runs:
   using: 'composite'
 
   steps:
-    # - uses: actions/cache@v4
-    #   name: Cache compilers
-    #   with:
-    #     path: |
-    #       /home/runner/.solcx/solc-v*
-    #       /home/runner/.vvm/vyper-*
-    #     key: ${{ runner.os }}-compiler-cache
+    - uses: actions/cache@v4
+      name: Cache
+      with:
+        path: |
+          /home/runner/.solcx
+          /home/runner/.vvm/vyper-*
+        key: ${{ runner.os }}-compiler-cache
 
     - uses: actions/cache@v4
       with:
@@ -134,7 +134,7 @@ runs:
       shell: bash
       if: steps.check-requirements-txt.outputs.files_exists == 'true'
 
-    - name: Ensure compiler directories exist
+    - name: Ensure cache directories exist
       shell: bash
       run: |
         # This helps avoid caching warnings even when these compilers
@@ -146,4 +146,8 @@ runs:
         if [ ! -d "/home/runner/.vvm" ]; then
           mkdir "/home/runner/.vvm"
           echo "VVM directory created."
+        fi
+        if [ ! -d "${{ github.workspace }}/.build" ]; then
+          mkdir "${{ github.workspace }}/.build"
+          echo ".build directory created."
         fi
