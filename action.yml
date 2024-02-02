@@ -30,7 +30,7 @@ runs:
       with:
         path: |
           /home/runner/.solcx
-          /home/runner/.vvm/vyper-*
+          /home/runner/.vvm
         key: ${{ runner.os }}-compiler-cache
 
     - uses: actions/cache@v4
