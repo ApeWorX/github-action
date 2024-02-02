@@ -26,12 +26,13 @@ runs:
   using: 'composite'
 
   steps:
-    - uses: actions/cache@v4
-      with:
-        path: |
-          /home/runner/.solcx/solc-v*
-          /home/runner/.vvm/vyper-*
-        key: ${{ runner.os }}-compiler-cache
+    # - uses: actions/cache@v4
+    #   name: Cache compilers
+    #   with:
+    #     path: |
+    #       /home/runner/.solcx/solc-v*
+    #       /home/runner/.vvm/vyper-*
+    #     key: ${{ runner.os }}-compiler-cache
 
     - uses: actions/cache@v4
       with:
