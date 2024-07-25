@@ -7,7 +7,7 @@ This action allows you to use your favorte [`ape`](https://github.com/ApeWorX/ap
 ### `python-version`
 
 **Optional** Overrides the version of python used to run ape.
-Default is using Python `'3.8'`.
+Default is using Python `'3.10'`.
 
 ### `ape-version-pin`
 

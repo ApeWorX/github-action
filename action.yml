@@ -7,9 +7,9 @@ branding:
 
 inputs:
   python-version:
-    description: 'Override version of python used to run ape- default 3.8'
+    description: 'Override version of python used to run ape- default 3.10'
     required: False
-    default: '3.8'
+    default: '3.10'
   ape-version-pin:
     description: 'Override version of eth-ape, can also use a `git+` prefixed value'
     required: False
