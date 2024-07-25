@@ -22,8 +22,8 @@ jobs:
         version:
           [
             'default',
-            '0.7.0',
-            '==0.7.0',
+            '0.8.0',
+            '==0.8.0',
             'git+https://github.com/ApeWorX/ape.git@main',
           ]
     steps:

@@ -23,7 +23,7 @@ jobs:
           'default_with_version_config',
           'default_without_version_in_config',
           'tokens',
-          'tokens==0.7.0'
+          'tokens==0.8.0'
         ]
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
 
           if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" ]]; then
             # Remove the version so it defaults to `. -U`.
-            sed -i 's/version: 0.7.0//g' "ape-config.yaml"
+            sed -i 's/version: 0.8.0//g' "ape-config.yaml"
           fi
 
       - name: Run ape action
