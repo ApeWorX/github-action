@@ -7,7 +7,7 @@ This action allows you to use your favorte [`ape`](https://github.com/ApeWorX/ap
 ### `python-version`
 
 **Optional** Overrides the version of python used to run ape.
-Default is using Python `'3.8'`.
+Default is using Python `'3.10'`.
 
 ### `ape-version-pin`
 
@@ -46,8 +46,8 @@ steps:
   - uses: ApeWorX/github-action@v2
     with:
       python-version: '3.10' # (optional)
-      ape-version-pin: '>=0.7.0' # (optional)
-      ape-plugins-list: 'solidity vyper==0.7.0' # (optional)
+      ape-version-pin: '>=0.8.10' # (optional)
+      ape-plugins-list: 'solidity vyper==0.8.4' # (optional)
   - run: ape test -s
 ```
 
