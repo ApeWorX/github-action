@@ -43,7 +43,7 @@ This will either be the same as the `ape-version-pin` input if you provided that
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: ApeWorX/github-action@v2
+  - uses: ApeWorX/github-action@v3
     with:
       python-version: '3.10' # (optional)
       ape-version-pin: '>=0.8.10' # (optional)
