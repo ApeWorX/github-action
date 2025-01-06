@@ -142,15 +142,18 @@ runs:
         # in the cache action:
         # https://github.com/actions/cache/issues/1241
 
-        if [ ! -d "/home/runner/.solcx" ]; then
-          mkdir -p "/home/runner/.solcx"
-          echo "Solcx directory created."
-        fi
-        if [ ! -d "/home/runner/.vvm" ]; then
-          mkdir -p "/home/runner/.vvm"
-          echo "VVM directory created."
-        fi
-        if [ ! -d "${{ github.workspace }}/.build" ]; then
-          mkdir -p "${{ github.workspace }}/.build"
-          echo ".build directory created."
+        # NOTE: If /home/runner does not exist, mkdir fails.
+        if [ -d "/home/runner" ]; then
+          if [ ! -d "/home/runner/.solcx" ]; then
+            mkdir "/home/runner/.solcx"
+            echo "Solcx directory created."
+          fi
+          if [ ! -d "/home/runner/.vvm" ]; then
+            mkdir "/home/runner/.vvm"
+            echo "VVM directory created."
+          fi
+          if [ ! -d "${{ github.workspace }}/.build" ]; then
+            mkdir "${{ github.workspace }}/.build"
+            echo ".build directory created."
+          fi
         fi
