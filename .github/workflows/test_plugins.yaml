@@ -15,16 +15,17 @@ concurrency:
 jobs:
   run-this-action:
     name: Run action (${{ matrix.plugins }})
-    runs-on: [ubuntu-latest]
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         plugins: [
           'default_with_version_config',
           'default_without_version_in_config',
           'tokens',
           'tokens==0.8.0'
         ]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
