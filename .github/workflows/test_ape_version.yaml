@@ -33,7 +33,7 @@ jobs:
       - name: Check version pin
         id: check-version
         run: |
-          if [[ ${{ matrix.version }} == "default" ]]; then
+          if [[ "${{ matrix.version }}" == "default" ]]; then
             echo "ape-version=''" >> $GITHUB_OUTPUT
           else
             echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
