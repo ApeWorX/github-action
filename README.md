@@ -46,8 +46,8 @@ steps:
   - uses: ApeWorX/github-action@v3
     with:
       python-version: '3.10' # (optional)
-      ape-version-pin: '>=0.8.10' # (optional)
-      ape-plugins-list: 'solidity vyper==0.8.4' # (optional)
+      ape-version-pin: '>=0.8.24' # (optional)
+      ape-plugins-list: 'solidity vyper==0.8.8' # (optional)
   - run: ape test -s
 ```
 
