@@ -22,8 +22,8 @@ jobs:
         version:
           [
             'default',
-            '0.8.10',
-            '==0.8.10',
+            '0.8.24',
+            '==0.8.24',
             'git+https://github.com/ApeWorX/ape.git@main',
           ]
     runs-on: ${{ matrix.os }}
