@@ -38,7 +38,7 @@ jobs:
 
           if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" ]]; then
             # Remove the version so it defaults to `. -U`.
-            awk '!/version: 0.8.4/' "ape-config.yaml" > "ape-config.tmp" && mv "ape-config.tmp" "ape-config.yaml"
+            awk '!/version: 0.8.3/' "ape-config.yaml" > "ape-config.tmp" && mv "ape-config.tmp" "ape-config.yaml"
           fi
 
       - name: Run ape action
