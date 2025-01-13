@@ -1,4 +1,4 @@
 # This file exists only as a test for the action.
 plugins:
   - name: tokens
-    version: 0.8.0
+    version: 0.8.3

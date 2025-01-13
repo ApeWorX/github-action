@@ -13,26 +13,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-this-action:
-    name: Run action (${{ matrix.version }})
-    runs-on: [ubuntu-latest]
+  test-version:
+    name: Test version (${{ matrix.os }} ${{ matrix.version }})
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest]
         version:
           [
             'default',
-            '0.8.10',
-            '==0.8.10',
+            '0.8.24',
+            '==0.8.24',
             'git+https://github.com/ApeWorX/ape.git@main',
           ]
+    runs-on: ${{ matrix.os }}
+    env:
+      GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Check version pin
         id: check-version
         run: |
-          if [[ ${{ matrix.version }} == "default" ]]; then
+          if [[ "${{ matrix.version }}" == "default" ]]; then
             echo "ape-version=''" >> $GITHUB_OUTPUT
           else
             echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
