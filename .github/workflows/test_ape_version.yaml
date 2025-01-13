@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-this-action:
-    name: Run action (${{ matrix.version }})
+  test-version:
+    name: Test version (${{ matrix.os }} ${{ matrix.version }})
     strategy:
       fail-fast: false
       matrix:
@@ -27,6 +27,8 @@ jobs:
             'git+https://github.com/ApeWorX/ape.git@main',
           ]
     runs-on: ${{ matrix.os }}
+    env:
+      GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
