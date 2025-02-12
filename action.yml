@@ -30,8 +30,8 @@ runs:
       name: Compilers cache
       with:
         path: |
-          /home/runner/.solcx
-          /home/runner/.vvm/vyper-*
+          $HOME/.solcx
+          $HOME/.vvm/vyper-*
         key: ${{ runner.os }}-compiler-cache
 
     - uses: actions/cache@v4
@@ -142,7 +142,7 @@ runs:
         # in the cache action:
         # https://github.com/actions/cache/issues/1241
 
-        # NOTE: If /home/runner does not exist, mkdir fails.
+        # NOTE: If HOME does not exist, mkdir fails.
         if [ -d "$HOME" ]; then
           if [ ! -d "$HOME/.solcx" ]; then
             mkdir "$HOME/.solcx"
