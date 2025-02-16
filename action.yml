@@ -44,7 +44,7 @@ runs:
       name: Ape data cache
       with:
         path: $HOME/.ape
-        key: ${{ runner.os }}-build-cache
+        key: ${{ runner.os }}-apedata-cache
 
     - uses: actions/setup-python@v5
       with:
