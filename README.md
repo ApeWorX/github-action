@@ -51,4 +51,11 @@ steps:
   - run: ape test -s
 ```
 
-**NOTE** This action is still in development
+## Caching
+
+This github action caches resources needed to efficiently use Ape.
+The following table highlights the cached items:
+
+- Compiler binaries located in `$HOME/.vvm` and `$HOME/.solcx`
+- `$github.workspace/.build` - the compiled project
+- `$HOME/.ape` to avoid having to re-download dependencies / re-create accounts.
