@@ -37,9 +37,14 @@ runs:
     - uses: actions/cache@v4
       name: Build cache
       with:
-        path: |
-          ${{ github.workspace }}/.build
+        path: ${{ github.workspace }}/.build
         key: ${{ runner.os }}-build-cache
+
+    - uses: actions/cache@v4
+      name: Ape data cache
+      with:
+        path: $HOME/.ape
+        key: ${{ runner.os }}-apedata-cache
 
     - uses: actions/setup-python@v5
       with:
