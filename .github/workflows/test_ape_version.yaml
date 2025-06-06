@@ -26,6 +26,10 @@ jobs:
             '==0.8.24',
             'git+https://github.com/ApeWorX/ape.git@main',
           ]
+        extra-packages: [
+          'requirements.txt',
+          'pyproject.toml',
+        ]
     runs-on: ${{ matrix.os }}
     env:
       GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,18 +44,26 @@ jobs:
           else
             echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
           fi
+
+      - name: Convert 'requirements.txt' to 'pyproject.toml'
+        if: ${{ matrix.extra-packages == 'pyproject.toml' }}
+        shell: bash
+        run: |
+          pip install tomlkit
+        python -c 'from pathlib import Path; txt = Path("requirements.txt").read_text(); import tomlkit; print(tomlkit.dumps({"project": {"dependencies": [line for line in txt.splitlines() if not line.startswith("#")], "name":"test", "version": "0.0.0"}}))' | tee pyproject.toml
+          rm requirements.txt
+
       - name: Run ape action
         id: ape-action
         uses: ./
         with:
           ape-version-pin: ${{ steps.check-version.outputs.ape-version }}
 
-      - run: ape --help
-
       - name: Print outputs
         run: |
-          echo "Output: ${{ steps.ape-action.outputs.ape-version }}"
-        
-      - name: Requirements.txt Test
-        run: |
-          pip show hypothesis
+          echo "Ape Version: ${{ steps.ape-action.outputs.ape-version }}"
+
+      - run: ape --help
+
+      - name: Extra packages Test
+        run: pip show hypothesis
