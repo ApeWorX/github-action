@@ -25,6 +25,10 @@ jobs:
           'tokens',
           'tokens==0.8.3'
         ]
+        config-file: [
+          'ape-config.yaml',
+          'pyproject.toml',
+        ]
     runs-on: ${{ matrix.os }}
     env:
       GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,6 +46,14 @@ jobs:
             # Remove the version so it defaults to `. -U`.
             awk '!/version: 0.8.3/' "ape-config.yaml" > "ape-config.tmp" && mv "ape-config.tmp" "ape-config.yaml"
           fi
+
+      - name: Convert 'ape-config.yaml' to 'pyproject.toml'
+        if: ${{ matrix.config-file == 'pyproject.toml' }}
+        shell: bash
+        run: |
+          pip install tomlkit PyYAML
+          python -c 'from pathlib import Path; import yaml; import tomlkit; print(tomlkit.dumps({"tool": {"ape": yaml.safe_load(Path("ape-config.yaml").read_text())}}))' | tee pyproject.toml
+          rm ape-config.yaml
 
       - name: Run ape action
         id: ape-action
