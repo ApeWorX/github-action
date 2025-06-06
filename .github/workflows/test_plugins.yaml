@@ -61,4 +61,22 @@ jobs:
         with:
           ape-plugins-list: ${{ steps.check-plugins.outputs.ape-plugins }}
 
-      - run: ape plugins list
+      - name: Check results
+        shell: bash
+        run: |
+          result="$(ape plugins list | grep -o 'tokens.*' | grep -o '[0-9\.]*')"
+
+          if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" || "${{ matrix.plugins }}" == "tokens" ]];
+          then
+            if [[ $result == "0.8.3" ]];
+            then
+              echo "Expected $result to be greater than 0.8.3"
+              exit 1;
+            fi
+          else
+            if [[ $result != "0.8.3" ]];
+            then
+              echo "Expected $result to be equal to 0.8.3"
+              exit 1;
+            fi
+          fi
