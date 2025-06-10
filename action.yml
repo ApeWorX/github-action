@@ -7,9 +7,9 @@ branding:
 
 inputs:
   python-version:
-    description: 'Override version of python used to run ape- default 3.10'
+    description: 'Override version of python used to run ape - default 3.11'
     required: False
-    default: '3.10'
+    default: '3.11'
   ape-version-pin:
     description: 'Override version of eth-ape, can also use a `git+` prefixed value'
     required: False
@@ -100,19 +100,27 @@ runs:
       uses: andstor/file-existence-action@v3
       with:
         files: 'ape-config.yaml'
-      
+
+    - name: Check pyproject.toml exists
+      id: check-pyproject-toml
+      uses: andstor/file-existence-action@v3
+      with:
+        files: 'pyproject.toml'
+
     - name: Check version specs in config
       id: check-plugin-version-specs
       run: |
         if [[ "${{ steps.check-ape-config-yaml.outputs.files_exists }}" == "true" ]]; then
           version_present=$(sed -n '/^plugins:/,/^[^ ]/{/version:/p;}' "ape-config.yaml" | grep -c version || true)
-          if [[ -z "${version_present}" ]]; then
-            echo "version_present=0" >> $GITHUB_OUTPUT
-          else
-            echo "version_present=1" >> $GITHUB_OUTPUT
-          fi
+        elif [[ "${{ steps.check-pyproject-toml.outputs.files_exists }}" == "true" ]]; then
+          version_present=$(python -c "from pathlib import Path; import tomllib; config = tomllib.loads(Path('pyproject.toml').read_text()); print('true' if any('version' in plugin for plugin in config.get('tool', {}).get('ape', {}).get('plugins', [])) else '')")
         else
+          version_present=""
+        fi
+        if [[ -z "${version_present}" ]]; then
           echo "version_present=0" >> $GITHUB_OUTPUT
+        else
+          echo "version_present=1" >> $GITHUB_OUTPUT
         fi
       shell: bash
 
@@ -126,7 +134,7 @@ runs:
           plugins_value="${{ inputs.ape-plugins-list }}"
         fi
 
-        ape plugins install $plugins_value
+        ape plugins install --verbosity DEBUG $plugins_value
 
       shell: bash
     - name: Check requirments.txt exists
@@ -134,11 +142,15 @@ runs:
       uses: andstor/file-existence-action@v3
       with:
         files: 'requirements.txt'
-  
-    - name: Install requirements.txt
-      run: pip install -r requirements.txt
+
+    - name: Install extra packages
       shell: bash
-      if: steps.check-requirements-txt.outputs.files_exists == 'true'
+      run: |
+        if [[ "${{ steps.check-requirements-txt.outputs.files_exists }}" == "true" ]]; then
+          pip install -r requirements.txt
+        elif [[ "${{ steps.check-pyproject-toml.outputs.files_exists }}" == "true" ]]; then
+          pip install .
+        fi
 
     - name: Ensure cache directories exist
       shell: bash
