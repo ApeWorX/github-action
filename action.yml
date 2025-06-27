@@ -68,8 +68,8 @@ runs:
     
             # Change into the directory to hash relative paths deterministically
             pushd "$input_version" >/dev/null
-    
-            HASH=$(find "$input_version" -type f -exec sha256sum {} + | sha256sum | cut -c1-16)
+        
+            HASH=$(find "$input_version" -type f -exec shasum -a 256 {} + | shasum -a 256 | cut -c1-16)
 
             popd >/dev/null
     
