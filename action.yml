@@ -59,11 +59,33 @@ runs:
     - name: Determine ape version to use
       id: determine-version
       run: |
-        if [[ "${{ inputs.ape-version-pin }}" != "" && "${{ inputs.ape-version-pin }}" != "''" ]]; then
-          echo "ape-version=${{ inputs.ape-version-pin }}" >> $GITHUB_OUTPUT
+        input_version="${{ inputs.ape-version-pin }}"
+    
+        if [[ "$input_version" != "" && "$input_version" != "''" ]]; then
+          if [[ -d "$input_version" ]]; then
+            # Using a local directory – generate hash of its contents for cache key
+            echo "INFO: Using local path: $input_version"
+    
+            # Change into the directory to hash relative paths deterministically
+            pushd "$input_version" >/dev/null
+    
+            HASH=$(find "$input_version" -type f -exec sha256sum {} + | sha256sum | cut -c1-16)
+
+            popd >/dev/null
+    
+            echo "ape-version=$input_version" >> "$GITHUB_OUTPUT"
+            echo "ape-cache-key=local-${HASH}" >> "$GITHUB_OUTPUT"
+            echo "Using local repo with hash: $HASH"
+    
+          else
+            echo "ape-version=$input_version" >> "$GITHUB_OUTPUT"
+            echo "ape-cache-key=$input_version" >> "$GITHUB_OUTPUT"
+          fi
+    
         else
           latest_version=$(curl -s https://pypi.org/pypi/eth-ape/json | jq -r '.info.version')
-          echo "ape-version=${latest_version}" >> $GITHUB_OUTPUT
+          echo "ape-version=$latest_version" >> "$GITHUB_OUTPUT"
+          echo "ape-cache-key=$latest_version" >> "$GITHUB_OUTPUT"
         fi
       shell: bash
 
@@ -73,24 +95,31 @@ runs:
       with:
         path: |
           ${{ steps.pip-cache-dir-path.outputs.dir }}
-        key: ${{ inputs.python-version }}-pip-${{ steps.determine-version.outputs.ape-version }}
+        key: ${{ inputs.python-version }}-pip-${{ steps.determine-version.outputs.ape-cache-key }}
 
     - name: Install Ape
       run: |
         pip install --upgrade pip
-        if [[ "${{ steps.determine-version.outputs.ape-version }}" == git+* ]]
-        then
+    
+        ape_version="${{ steps.determine-version.outputs.ape-version }}"
+    
+        if [[ "$ape_version" == git+* ]]; then
           echo "INFO: Installing from a remote git version."
-          pip install ${{ steps.determine-version.outputs.ape-version }}
+          pip install "$ape_version"
+    
+        elif [[ -d "$ape_version" ]]; then
+          echo "INFO: Installing from local path: $ape_version"
+          pip install "$ape_version"
+    
         else
           version_regex='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
-          if [[ ${{ steps.determine-version.outputs.ape-version }} =~ $version_regex ]]; then
-            # Allows for excluding `==` to `ape-version-pin`
-            echo "Installing with == prefix"
-            pip install eth-ape==${{ steps.determine-version.outputs.ape-version }}
+    
+          if [[ "$ape_version" =~ $version_regex ]]; then
+            echo "INFO: Installing eth-ape==$ape_version"
+            pip install "eth-ape==$ape_version"
           else
-            echo "Installing using given constraints"
-            pip install eth-ape${{ steps.determine-version.outputs.ape-version }}
+            echo "INFO: Installing eth-ape$ape_version"
+            pip install "eth-ape$ape_version"
           fi
         fi
       shell: bash
