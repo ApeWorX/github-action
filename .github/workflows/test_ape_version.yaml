@@ -22,8 +22,8 @@ jobs:
         version:
           [
             'default',
-            '0.8.24',
-            '==0.8.24',
+            '0.8.36',
+            '==0.8.36',
             'git+https://github.com/ApeWorX/ape.git@main',
             '<PATH_TO_APE>',
           ]
@@ -44,6 +44,14 @@ jobs:
         with:
           repository: ApeWorX/ape
           path: eth-ape
+
+      - name: Debug eth-ape folder
+        if: contains(matrix.version, '<PATH_TO_APE>')
+        run: |
+          echo "Listing current directory"
+          ls -la
+          echo "Listing eth-ape directory"
+          ls -la eth-ape || echo "eth-ape directory not found"
 
       - name: Check version pin
         id: check-version
