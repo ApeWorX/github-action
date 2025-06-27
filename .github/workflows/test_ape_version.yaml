@@ -1,3 +1,17 @@
+name: Version Test
+
+on:
+  push:
+    branches: [main]
+    tags-ignore: ['**']
+    paths-ignore: ['**.md']
+  pull_request:
+    paths-ignore: ['**.md']
+
+concurrency:
+  group: ${{ github.ref }}-version
+  cancel-in-progress: true
+
 jobs:
   test-version:
     name: Test version (${{ matrix.os }} ${{ matrix.version }})
