@@ -59,7 +59,7 @@ jobs:
           if [[ "${{ matrix.version }}" == "default" ]]; then
             echo "ape-version=''" >> $GITHUB_OUTPUT
           elif [[ "${{ matrix.version }}" == "<PATH_TO_APE>" ]]; then
-            echo "ape-version=./eth-ape" >> $GITHUB_OUTPUT
+            echo "ape-version=${{ github.workspace }}/eth-ape" >> $GITHUB_OUTPUT
           else
             echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
           fi
