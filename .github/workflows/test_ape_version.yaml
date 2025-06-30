@@ -40,7 +40,7 @@ jobs:
 
       # Checkout eth-ape repo if needed for <PATH_TO_APE>
       - name: Checkout eth-ape
-        if: contains(matrix.version, '<PATH_TO_APE>')
+        if: contains(matrix.version, '<PATH_TO_APE>') || contains(matrix.version, '<PATH_TO_APE_WITH_EXTRAS>')
         uses: actions/checkout@v4
         with:
           repository: ApeWorX/ape
