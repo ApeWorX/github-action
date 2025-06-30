@@ -12,8 +12,9 @@ Default is using Python `'3.10'`.
 ### `ape-version-pin`
 
 **Optional** Overrides the pin used to install `eth-ape`.
-Default is to use the latest version of `eth-ape` (no pin).
-Can also use a `git+` value to install a branch, commit, or tag.
+The default is to use the latest version of `eth-ape` (no pin).
+You can use a `git+` value to install a branch, commit, or tag.
+You can also paths, such as `"."` if you already have Ape checked out.
 
 Example values:
 
@@ -21,6 +22,7 @@ Example values:
 - `==1.0.0`
 - `>=1.0.0,<2.0`
 - `git+https://github.com/your-github/ape.git@your-branch`
+- `$HOME/path/to/ape`
 
 ### `ape-plugins-list`
 
