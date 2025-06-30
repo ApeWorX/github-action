@@ -26,6 +26,7 @@ jobs:
             '==0.8.36',
             'git+https://github.com/ApeWorX/ape.git@main',
             '<PATH_TO_APE>',
+            '<PATH_TO_APE_WITH_EXTRAS>',
           ]
         extra-packages: [
           'requirements.txt',
@@ -60,6 +61,8 @@ jobs:
             echo "ape-version=''" >> $GITHUB_OUTPUT
           elif [[ "${{ matrix.version }}" == "<PATH_TO_APE>" ]]; then
             echo "ape-version=${{ github.workspace }}/eth-ape" >> $GITHUB_OUTPUT
+          elif [[ "${{ matrix.version }}" == "<PATH_TO_APE_WITH_EXTRAS>" ]]; then
+            echo "ape-version=${{ github.workspace }}/eth-ape[test]" >> $GITHUB_OUTPUT
           else
             echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
           fi

@@ -62,7 +62,11 @@ runs:
         input_version="${{ inputs.ape-version-pin }}"
     
         if [[ "$input_version" != "" && "$input_version" != "''" ]]; then
-          if [[ -d "$input_version" ]]; then
+
+          # Extract base path (before '[') for local path detection
+          base_path="${input_version%%[*}"
+
+          if [[ -d "$base_path" ]]; then
             # Using a local directory – generate hash of its contents for cache key
             echo "INFO: Using local path: $input_version"
     
@@ -100,26 +104,31 @@ runs:
     - name: Install Ape
       run: |
         pip install --upgrade pip
-    
+
         ape_version="${{ steps.determine-version.outputs.ape-version }}"
-    
+
         if [[ "$ape_version" == git+* ]]; then
           echo "INFO: Installing from a remote git version."
           pip install "$ape_version"
-    
-        elif [[ -d "$ape_version" ]]; then
-          echo "INFO: Installing from local path: $ape_version"
-          pip install "$ape_version"
-    
+
         else
-          version_regex='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
-    
-          if [[ "$ape_version" =~ $version_regex ]]; then
-            echo "INFO: Installing eth-ape==$ape_version"
-            pip install "eth-ape==$ape_version"
+          # Extract base path for local directory detection
+          base_path="${ape_version%%[*}"
+
+          if [[ -d "$base_path" ]]; then
+            echo "INFO: Installing from local path: $ape_version"
+            pip install "$ape_version"
+
           else
-            echo "INFO: Installing eth-ape$ape_version"
-            pip install "eth-ape$ape_version"
+            version_regex='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
+
+            if [[ "$ape_version" =~ $version_regex ]]; then
+              echo "INFO: Installing eth-ape==$ape_version"
+              pip install "eth-ape==$ape_version"
+            else
+              echo "INFO: Installing eth-ape$ape_version"
+              pip install "eth-ape$ape_version"
+            fi
           fi
         fi
       shell: bash

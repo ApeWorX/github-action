@@ -23,6 +23,8 @@ Example values:
 - `>=1.0.0,<2.0`
 - `git+https://github.com/your-github/ape.git@your-branch`
 - `$HOME/path/to/ape`
+- `.`
+- `.[test]`
 
 ### `ape-plugins-list`
 
