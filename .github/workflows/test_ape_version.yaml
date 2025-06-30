@@ -26,6 +26,7 @@ jobs:
             '==0.8.36',
             'git+https://github.com/ApeWorX/ape.git@main',
             '<PATH_TO_APE>',
+            '<PATH_TO_APE_WITH_EXTRAS>',
           ]
         extra-packages: [
           'requirements.txt',
@@ -39,19 +40,12 @@ jobs:
 
       # Checkout eth-ape repo if needed for <PATH_TO_APE>
       - name: Checkout eth-ape
-        if: contains(matrix.version, '<PATH_TO_APE>')
+        if: contains(matrix.version, '<PATH_TO_APE>') || contains(matrix.version, '<PATH_TO_APE_WITH_EXTRAS>')
         uses: actions/checkout@v4
         with:
           repository: ApeWorX/ape
           path: eth-ape
-
-      - name: Debug eth-ape folder
-        if: contains(matrix.version, '<PATH_TO_APE>')
-        run: |
-          echo "Listing current directory"
-          ls -la
-          echo "Listing eth-ape directory"
-          ls -la eth-ape || echo "eth-ape directory not found"
+          fetch-depth: 0
 
       - name: Check version pin
         id: check-version
@@ -60,6 +54,8 @@ jobs:
             echo "ape-version=''" >> $GITHUB_OUTPUT
           elif [[ "${{ matrix.version }}" == "<PATH_TO_APE>" ]]; then
             echo "ape-version=${{ github.workspace }}/eth-ape" >> $GITHUB_OUTPUT
+          elif [[ "${{ matrix.version }}" == "<PATH_TO_APE_WITH_EXTRAS>" ]]; then
+            echo "ape-version=${{ github.workspace }}/eth-ape[test]" >> $GITHUB_OUTPUT
           else
             echo "ape-version=${{ matrix.version }}" >> $GITHUB_OUTPUT
           fi
