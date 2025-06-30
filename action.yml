@@ -71,7 +71,7 @@ runs:
             echo "INFO: Using local path: $input_version"
     
             # Change into the directory to hash relative paths deterministically
-            pushd "$input_version" >/dev/null
+            pushd "$base_path" >/dev/null
         
             HASH=$(find "$input_version" -type f -exec shasum -a 256 {} + | shasum -a 256 | cut -c1-16)
 
@@ -113,7 +113,7 @@ runs:
 
         else
           # Extract base path for local directory detection
-          base_path="${ape_version%%[*}"
+          base_path="${ape_version%%\[*}"
 
           if [[ -d "$base_path" ]]; then
             echo "INFO: Installing from local path: $ape_version"
