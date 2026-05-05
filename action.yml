@@ -29,9 +29,6 @@ runs:
     - name: Ensure cache directories exist
       shell: bash
       run: |
-        # NOTE: Workaround for an unrepressible warning
-        # in the cache action:
-        # https://github.com/actions/cache/issues/1241
         mkdir -p "$HOME/.solcx"
         mkdir -p "$HOME/.vvm"
         mkdir -p "$HOME/.ape"
