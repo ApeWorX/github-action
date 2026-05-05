@@ -26,14 +26,6 @@ runs:
   using: 'composite'
 
   steps:
-    - name: Ensure cache directories exist
-      shell: bash
-      run: |
-        mkdir -p "$HOME/.solcx"
-        mkdir -p "$HOME/.vvm"
-        mkdir -p "$HOME/.ape"
-        mkdir -p "${{ github.workspace }}/.build"
-
     - uses: actions/cache@v5
       name: Compilers cache
       with:
@@ -196,4 +188,27 @@ runs:
           pip install -r requirements.txt
         elif [[ "${{ steps.check-pyproject-toml.outputs.files_exists }}" == "true" ]]; then
           pip install .
+        fi
+
+    - name: Ensure cache directories exist
+      shell: bash
+      run: |
+        # NOTE: Workaround for an unrepressible warning
+        # in the cache action:
+        # https://github.com/actions/cache/issues/1241
+
+        # NOTE: If HOME does not exist, mkdir fails.
+        if [ -d "$HOME" ]; then
+          if [ ! -d "$HOME/.solcx" ]; then
+            mkdir "$HOME/.solcx"
+            echo "Solcx directory created."
+          fi
+          if [ ! -d "$HOME/.vvm" ]; then
+            mkdir "$HOME/.vvm"
+            echo "VVM directory created."
+          fi
+          if [ ! -d "$HOME/.build" ]; then
+            mkdir "$HOME/.build"
+            echo ".build directory created."
+          fi
         fi
