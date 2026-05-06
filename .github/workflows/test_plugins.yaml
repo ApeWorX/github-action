@@ -23,7 +23,7 @@ jobs:
           'default_with_version_config',
           'default_without_version_in_config',
           'tokens',
-          'tokens==0.8.3'
+          'tokens==0.8.9'
         ]
         config-file: [
           'ape-config.yaml',
