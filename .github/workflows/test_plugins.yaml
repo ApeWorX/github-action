@@ -44,7 +44,7 @@ jobs:
 
           if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" ]]; then
             # Remove the version so it defaults to `. -U`.
-            awk '!/version: 0.8.3/' "ape-config.yaml" > "ape-config.tmp" && mv "ape-config.tmp" "ape-config.yaml"
+            awk '!/version: 0.8.9/' "ape-config.yaml" > "ape-config.tmp" && mv "ape-config.tmp" "ape-config.yaml"
           fi
 
       - name: Convert 'ape-config.yaml' to 'pyproject.toml'
@@ -68,15 +68,15 @@ jobs:
 
           if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" || "${{ matrix.plugins }}" == "tokens" ]];
           then
-            if [[ $result == "0.8.3" ]];
+            if [[ $result == "0.8.9" ]];
             then
-              echo "Expected $result to be greater than 0.8.3"
+              echo "Expected $result to be greater than 0.8.9"
               exit 1;
             fi
           else
-            if [[ $result != "0.8.3" ]];
+            if [[ $result != "0.8.9" ]];
             then
-              echo "Expected $result to be equal to 0.8.3"
+              echo "Expected $result to be equal to 0.8.9"
               exit 1;
             fi
           fi
