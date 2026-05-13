@@ -22,8 +22,8 @@ jobs:
         plugins: [
           'default_with_version_config',
           'default_without_version_in_config',
-          'tokens',
-          'tokens==0.8.9'
+          'etherscan',
+          'etherscan==0.8.5'
         ]
         config-file: [
           'ape-config.yaml',
@@ -44,7 +44,7 @@ jobs:
 
           if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" ]]; then
             # Remove the version so it defaults to `. -U`.
-            awk '!/version: 0.8.9/' "ape-config.yaml" > "ape-config.tmp" && mv "ape-config.tmp" "ape-config.yaml"
+            awk '!/version: 0.8.5/' "ape-config.yaml" > "ape-config.tmp" && mv "ape-config.tmp" "ape-config.yaml"
           fi
 
       - name: Convert 'ape-config.yaml' to 'pyproject.toml'
@@ -64,19 +64,19 @@ jobs:
       - name: Check results
         shell: bash
         run: |
-          result="$(ape plugins list | grep -o 'tokens.*' | grep -o '[0-9\.]*')"
+          result="$(ape plugins list | grep -o 'etherscan.*' | grep -o '[0-9\.]*')"
 
-          if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" || "${{ matrix.plugins }}" == "tokens" ]];
+          if [[ "${{ matrix.plugins }}" == "default_without_version_in_config" || "${{ matrix.plugins }}" == "etherscan" ]];
           then
-            if [[ $result == "0.8.9" ]];
+            if [[ $result == "0.8.5" ]];
             then
-              echo "Expected $result to be greater than 0.8.9"
+              echo "Expected $result to be greater than 0.8.5"
               exit 1;
             fi
           else
-            if [[ $result != "0.8.9" ]];
+            if [[ $result != "0.8.5" ]];
             then
-              echo "Expected $result to be equal to 0.8.9"
+              echo "Expected $result to be equal to 0.8.5"
               exit 1;
             fi
           fi
