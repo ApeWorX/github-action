@@ -26,7 +26,7 @@ runs:
   using: 'composite'
 
   steps:
-    - uses: actions/cache@v5
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       name: Compilers cache
       with:
         path: |
@@ -34,19 +34,19 @@ runs:
           $HOME/.vvm/vyper-*
         key: ${{ runner.os }}-compiler-cache
 
-    - uses: actions/cache@v5
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       name: Build cache
       with:
         path: ${{ github.workspace }}/.build
         key: ${{ runner.os }}-build-cache
 
-    - uses: actions/cache@v5
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       name: Ape data cache
       with:
         path: $HOME/.ape
         key: ${{ runner.os }}-apedata-cache
 
-    - uses: actions/setup-python@v6
+    - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
       with:
         python-version: ${{ inputs.python-version }}
 
@@ -94,7 +94,7 @@ runs:
       shell: bash
 
     - name: Restore pip cache
-      uses: actions/cache@v5
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       id: pip-cache
       with:
         path: |
@@ -135,13 +135,13 @@ runs:
 
     - name: Check ape-config.yaml exists
       id: check-ape-config-yaml
-      uses: andstor/file-existence-action@v3
+      uses: andstor/file-existence-action@558493d6c74bf472d87c84eab196434afc2fa029 # v3.1.0
       with:
         files: 'ape-config.yaml'
 
     - name: Check pyproject.toml exists
       id: check-pyproject-toml
-      uses: andstor/file-existence-action@v3
+      uses: andstor/file-existence-action@558493d6c74bf472d87c84eab196434afc2fa029 # v3.1.0
       with:
         files: 'pyproject.toml'
 
@@ -177,7 +177,7 @@ runs:
       shell: bash
     - name: Check requirments.txt exists
       id: check-requirements-txt
-      uses: andstor/file-existence-action@v3
+      uses: andstor/file-existence-action@558493d6c74bf472d87c84eab196434afc2fa029 # v3.1.0
       with:
         files: 'requirements.txt'
 
